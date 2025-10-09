@@ -87,6 +87,7 @@ All buttons include hover and click animations for a better user experience.<br>
 | Amira Abdurahman | [amira](https://github.com/ami798) |ETS0170/16 |
 | Bemigbar Yehuwalawork | [bemigbar](https://github.com/Bem132833) |ETS0243/16 |
 | Bethelhem Kassaye | [bethelhem]() |ETS |
+| Bekam Yoseph | [bekam](https://github.com/bekam-bit) |ETS0240/16 |
 
 ---
 
