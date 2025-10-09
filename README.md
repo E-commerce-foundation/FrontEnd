@@ -85,8 +85,11 @@ All buttons include hover and click animations for a better user experience.<br>
 | Name |Github | ID|
 |------|------|-------------|
 | Amira Abdurahman | [amira](https://github.com/ami798) |ETS0170/16 |
-| 
-
+| Bemigbar Yehualawork | [bemigbar]() |ETS |
+| Bethelhem Kassaye | [bethelhem]() |ETS |
+|
+|
+|
 ---
 
 ## 🏁 Expected Outcome
