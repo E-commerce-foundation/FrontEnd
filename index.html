@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>ShopLight — Modern E-commerce Experience</title>
+        <meta
+            name="description"
+            content="Discover our curated collection of premium products with seamless shopping experience"
+        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="css/reset.css" />
+        <link rel="stylesheet" href="css/style.css" />
+        <!-- spline-viewer will be lazy-loaded when the hero is near the viewport -->
+        <!-- (script injected by js/app.js) -->
+    </head>
+    <body>
+        <!-- Header / Navigation -->
+        <header class="site-header">
+            <div class="container header-inner">
+                <div class="brand">
+                    <a href="#" class="logo">ShopLight</a>
+                </div>
+
+                <form class="search" role="search" aria-label="Search products">
+                    <svg
+                        class="search-icon"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    >
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                    <input
+                        type="search"
+                        id="searchInput"
+                        placeholder="Search products..."
+                    />
+                </form>
+
+                <div class="header-actions">
+                    <button
+                        id="favoritesBtn"
+                        aria-label="View favorites"
+                        class="icon-btn"
+                        title="Favorites"
+                    >
+                        <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        >
+                            <path
+                                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                            ></path>
+                        </svg>
+                    </button>
+                    <button
+                        id="cartBtn"
+                        aria-controls="cartDrawer"
+                        aria-expanded="false"
+                        class="cart-btn"
+                    >
+                        <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        >
+                            <path
+                                d="M3 3h2l.4 2M7 13h10l4-8H5.4m1.6 8L5 3H3m4 10v6a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-6"
+                            ></path>
+                        </svg>
+                        Cart
+                        <span id="cartCount" class="cart-count">0</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main>
+            <!-- Hero Section -->
+            <section class="hero">
+                <div class="container hero-grid">
+                    <div class="hero-content">
+                        <h1>Discover Quality Products for Modern Living</h1>
+                        <p>
+                            Explore our curated collection of premium items
+                            designed to enhance your lifestyle with style,
+                            comfort, and functionality.
+                        </p>
+                        <a href="#products" class="hero-cta">
+                            <span>Shop Now</span>
+                            <svg
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                            >
+                                <path d="M5 12h14M12 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
+                    </div>
+
+                    <div class="spline-wrap" aria-describedby="splineDesc">
+                        <div
+                            id="splinePlaceholder"
+                            class="spline-placeholder"
+                            data-spline-url="https://prod.spline.design/UWoeqiir20o49Dah/scene.splinecode"
+                        ></div>
+                        <noscript>
+                            <img
+                                src="assets/images/hero-fallback.jpg"
+                                alt="Decorative product scene"
+                            />
+                        </noscript>
+                        <div id="splineDesc" class="sr-only">
+                            Decorative 3D scene showcasing product lifestyle.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Products Section -->
+            <section id="products" class="products-section">
+                <div class="container">
+                    <div class="section-header">
+                        <h2 class="section-title">Featured Products</h2>
+                        <div class="filters">
+                            <select
+                                id="categoryFilter"
+                                class="filter-select"
+                                aria-label="Filter by category"
+                            >
+                                <option value="all">All Categories</option>
+                                <option value="favorites">
+                                    Favorites Only
+                                </option>
+                            </select>
+                            <select
+                                id="sortSelect"
+                                class="filter-select"
+                                aria-label="Sort products"
+                            >
+                                <option value="default">Featured</option>
+                                <option value="price-asc">
+                                    Price: Low to High
+                                </option>
+                                <option value="price-desc">
+                                    Price: High to Low
+                                </option>
+                                <option value="rating">Highest Rated</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="productGrid" class="product-grid" role="list">
+                        <!-- Product cards rendered by js/app.js -->
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Cart Drawer -->
+        <aside id="cartDrawer" class="cart-drawer" aria-hidden="true">
+            <div class="cart-header">
+                <h3 class="cart-title">Shopping Cart</h3>
+                <button id="closeCart" class="icon-btn" aria-label="Close cart">
+                    <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    >
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div id="cartList" class="cart-list">
+                <!-- Cart items rendered here -->
+            </div>
+            <div class="cart-footer">
+                <div class="cart-total">
+                    <span class="cart-total-label">Total</span>
+                    <strong id="cartTotal" class="cart-total-amount"
+                        >$0.00</strong
+                    >
+                </div>
+                <div class="cart-actions">
+                    <button id="checkoutBtn" class="btn-checkout">
+                        Proceed to Checkout
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Checkout Modal -->
+        <div id="checkoutModal" class="modal-backdrop" aria-hidden="true">
+            <div class="modal">
+                <div class="modal-header">
+                    <h3 class="modal-title">Checkout</h3>
+                    <button
+                        id="closeModal"
+                        class="modal-close"
+                        aria-label="Close checkout"
+                    >
+                        <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        >
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="orderSummary">
+                        <!-- Order summary injected here -->
+                    </div>
+                    <div class="modal-actions">
+                        <button id="confirmPayment" class="btn btn-primary">
+                            Complete Purchase
+                        </button>
+                        <button id="printReceipt" class="btn btn-secondary">
+                            Download Receipt
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="site-footer">
+            <div class="container">
+                <div class="footer-content">
+                    <p class="footer-text">
+                        © <span id="year"></span> ShopLight. All rights
+                        reserved. Built with modern web technologies.
+                    </p>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Toast Notifications -->
+        <div class="toast-container" id="toastContainer"></div>
+
+        <!-- Quick View Modal -->
+        <div class="quick-view-modal-backdrop" id="quickViewModal">
+            <div class="quick-view-modal">
+                <div class="quick-view-header">
+                    <h3 class="quick-view-title" id="quickViewTitle"></h3>
+                    <button class="quick-view-close" id="quickViewClose">
+                        <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        >
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+                <div class="quick-view-body" id="quickViewBody">
+                    <!-- Quick view content inserted here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Scripts -->
+        <script src="js/products.js" defer></script>
+        <script src="js/app.js" defer></script>
+    </body>
+</html>
