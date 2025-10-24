@@ -14,10 +14,11 @@
             href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
             rel="stylesheet"
         />
-        <link rel="stylesheet" href="css/reset.css" />
-        <link rel="stylesheet" href="css/style.css" />
-        <!-- spline-viewer will be lazy-loaded when the hero is near the viewport -->
-        <!-- (script injected by js/app.js) -->
+        <link rel="stylesheet" href="./css/reset.css" />
+        <link rel="stylesheet" href="./css/product-card.css" />
+        <link rel="stylesheet" href="./index.css" />
+        <!-- Scripts -->
+        <script src="./index.js" type="module" defer></script>
     </head>
     <body>
         <!-- Header / Navigation -->
@@ -73,18 +74,11 @@
                         aria-expanded="false"
                         class="cart-btn"
                     >
-                        <svg
-                            width="20"
-                            height="20"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                        >
-                            <path
-                                d="M3 3h2l.4 2M7 13h10l4-8H5.4m1.6 8L5 3H3m4 10v6a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-6"
-                            ></path>
-                        </svg>
+                        <img
+                            src="../assets/icons/cart.svg"
+                            alt="Cart Icon"
+                            style="color: white"
+                        />
                         Cart
                         <span id="cartCount" class="cart-count">0</span>
                     </button>
@@ -172,7 +166,7 @@
                     </div>
 
                     <div id="productGrid" class="product-grid" role="list">
-                        <!-- Product cards rendered by js/app.js -->
+                        <!-- Product cards rendered by index.js -->
                     </div>
                 </div>
             </section>
@@ -292,9 +286,5 @@
                 </div>
             </div>
         </div>
-
-        <!-- Scripts -->
-        <script src="js/products.js" defer></script>
-        <script src="js/app.js" defer></script>
     </body>
 </html>

@@ -52,7 +52,7 @@ Project structure
 - `index.html` — main entry (hero, product grid, cart, modals)  
 - `assets/` — images and screenshots  
 - `css/` — design tokens and component styles (`style.css`, `reset.css`)  
-- `js/` — product data and app logic (`products.js`, `app.js`)  
+- `js/` — product data and app logic (`products.js`, `index.js`)  
 - `docs/` — proposals, changelog, and design notes
 
 Features (current)

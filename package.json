@@ -1,0 +1,15 @@
+{
+    "name": "shoplight",
+    "type": "module",
+    "version": "1.0.0",
+    "description": "An e-commerce web application",
+    "main": "./index.js",
+    "scripts": {
+        "start": "live-server"
+    },
+    "author": "Team ShopLight",
+    "license": "MIT",
+    "devDependencies": {
+        "live-server": "^1.2.1"
+    }
+}

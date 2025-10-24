@@ -35,7 +35,7 @@ The application follows a modular architecture with immediate function expressio
 
 ```
 js/
-├── app.js       # Main application logic and DOM manipulation
+├── index.js       # Main application logic and DOM manipulation
 ├── products.js  # Product data array
 
 css/
