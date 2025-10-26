@@ -1,21 +1,15 @@
 import { escapeHtml, formatPrice } from "../js/lib/utils.js";
+import { openQuickViewModal } from "./quick-view-model.js";
 
-export default function ProductCard(product, favorite) {
+export default function ProductCard(product) {
     const card = document.createElement("div");
     card.className = "card";
-    card.setAttribute("role", "listitem");
 
-    // Generate stars for rating (simple visual representation)
-    const fullStars = Math.floor(product.rating || 0);
-    const hasHalfStar = (product.rating || 0) % 1 >= 0.5;
-    const stars =
-        "★".repeat(fullStars) +
-        (hasHalfStar ? "☆" : "") +
-        "☆".repeat(5 - fullStars - (hasHalfStar ? 1 : 0));
+    const stars = product.getRatingStars();
 
     // Badge class based on badge text
     const badgeClass = product.details.badge
-        ? product.badge.toLowerCase().replace(/[^a-z]/g, "")
+        ? product.details.badge.toLowerCase()
         : "";
 
     card.innerHTML = `
@@ -24,9 +18,9 @@ export default function ProductCard(product, favorite) {
         product.name
     )}" loading="lazy">
               ${
-                  product.badge
+                  product.details.badge
                       ? `<div class="card-badge ${badgeClass}">${escapeHtml(
-                            product.badge
+                            product.details.badge
                         )}</div>`
                       : ""
               }
@@ -40,23 +34,33 @@ export default function ProductCard(product, favorite) {
                   <path d="m21 21-4.35-4.35"></path>
                 </svg>
               </button>
+
+              <button class="btn btn-icon ${
+                  product.isFavorite ? "favorited" : ""
+              }" title="Add to favorites" aria-pressed="${product.isFavorite}" data-fav="${
+        product.id
+    }">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                  </svg>
+                </button>
             </div>
 
 
             <div class="card-content">
               <div>
-                <h3 class="card-title">${escapeHtml(product.name)}</h3>
-                <product class="card-subtitle">${escapeHtml(
-                    product.category
-                )} • ${escapeHtml(product.color)}</product>
-
-
+                <h3 class="card-title">${product.name}</h3>
+                <product class="card-subtitle">
+                  ${product.details.category} • ${product.details.color}
+                </product> 
               </div>
               <div class="rating">
                 <span class="stars" aria-label="Rating: ${
-                    product.rating || 0
+                    product?.details?.rating || 0
                 } out of 5 stars">${stars}</span>
-                <span class="rating-count">(${product.reviewCount || 0})</span>
+                <span class="rating-count">(${
+                    product?.details?.reviewCount || 0
+                })</span>
               </div>
               <div class="price-row">
                 <span class="price-current">$${formatPrice(
@@ -76,13 +80,7 @@ export default function ProductCard(product, favorite) {
                 </button>
                 
                 
-                <button class="btn btn-icon ${
-                    favorite ? "favorited" : ""
-                }" title="Add to favorites" aria-pressed="${favorite}" data-fav="${product.id}">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                  </svg>
-                </button>
+                
               </div>
             </div>
           `;
@@ -96,11 +94,8 @@ export default function ProductCard(product, favorite) {
     const favBtn = card.querySelector("[data-fav]");
     favBtn.addEventListener("click", () => {
         toggleFav(product.id, favBtn);
-        favBtn.classList.toggle("favorited", favorite);
-        // Trigger re-filter if in favorites view
-        if (categoryFilter.value === "favorites") {
-            onFilterChange();
-        }
+        favBtn.classList.toggle("favorited", product.isFavorite);
+        onFilterChange();
     });
 
     const quickViewBtn = card.querySelector("[data-quickview]");

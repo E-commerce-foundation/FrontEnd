@@ -15,7 +15,7 @@ const PRODUCTS = [
             color: "Beige",
             size: "M",
             salePrice: 24.99, // 20% off for demo
-            rating: 4.5,
+            rating: 5,
             reviewCount: 128,
             badge: "20% OFF",
         }
@@ -154,3 +154,10 @@ const PRODUCTS = [
 ];
 
 export { PRODUCTS };
+
+export const getProduct = (productId) => {
+    console.log({PRODUCTS}, productId)
+    return PRODUCTS.find((product) => {
+        return product.id == productId;
+    });
+};

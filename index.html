@@ -8,14 +8,20 @@
             name="description"
             content="Discover our curated collection of premium products with seamless shopping experience"
         />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <meta http-equiv="X-UA-Compatible" content="IE=7" />
+        <meta name="keywords" content="ecommerce products" />
+
+        <!-- <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
             href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
             rel="stylesheet"
-        />
+        /> -->
         <link rel="stylesheet" href="./css/reset.css" />
         <link rel="stylesheet" href="./css/product-card.css" />
+        <link rel="stylesheet" href="./css/toast.css" />
+        <link rel="stylesheet" href="./css/utils/utils.css" />
+        <link rel="stylesheet" href="./css/quick-view.css" />
         <link rel="stylesheet" href="./index.css" />
         <!-- Scripts -->
         <script src="./index.js" type="module" defer></script>
@@ -144,9 +150,6 @@
                                 aria-label="Filter by category"
                             >
                                 <option value="all">All Categories</option>
-                                <option value="favorites">
-                                    Favorites Only
-                                </option>
                             </select>
                             <select
                                 id="sortSelect"
@@ -193,6 +196,7 @@
             <div id="cartList" class="cart-list">
                 <!-- Cart items rendered here -->
             </div>
+            
             <div class="cart-footer">
                 <div class="cart-total">
                     <span class="cart-total-label">Total</span>

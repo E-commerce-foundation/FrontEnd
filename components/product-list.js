@@ -1,10 +1,10 @@
 import ProductCard from "./product-card.js";
 
-export default function ProductList(list, favorites) {
+export default function ProductList(list) {
     const frag = document.createDocumentFragment();
 
-    list.forEach((p) => {
-        const card = ProductCard(p, favorites.has(p.id));
+    list.forEach((product) => {
+        const card = ProductCard(product);
         frag.appendChild(card);
     });
 
