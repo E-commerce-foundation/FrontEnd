@@ -1,1 +1,0 @@
-export const TAX = 15; // in percent
