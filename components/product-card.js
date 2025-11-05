@@ -64,12 +64,12 @@ export default function ProductCard(product) {
               </div>
               <div class="price-row">
                 <span class="price-current">$${formatPrice(
-                    product.salePrice || product.getPrice()
+                    product.details.salePrice || product.getPrice()
                 )}</span>
                 ${
-                    product.salePrice
+                    product.details.salePrice
                         ? `<span class="price-original">$${formatPrice(
-                              product.price
+                              product.getPrice()
                           )}</span>`
                         : ""
                 }

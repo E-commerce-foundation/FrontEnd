@@ -6,6 +6,7 @@ import { Product } from "../classes.js";
 
 const PRODUCTS = [
     new Product(
+        "1",
         "Linen Classic Shirt",
         29.99,
         "../assets/images/image (1).jpg",
@@ -21,6 +22,7 @@ const PRODUCTS = [
         }
     ),
     new Product(
+        "2",
         "Everyday Sneakers",
         64.99,
         "assets/images/product-2.svg",
@@ -36,6 +38,7 @@ const PRODUCTS = [
         }
     ),
     new Product(
+        "3",
         "Minimalist Watch",
         89.0,
         "assets/images/product-3.svg",
@@ -51,6 +54,7 @@ const PRODUCTS = [
         }
     ),
     new Product(
+        "4",
         "Cozy Knit Sweater",
         49.5,
         "assets/images/product-4.svg",
@@ -66,6 +70,7 @@ const PRODUCTS = [
         }
     ),
     new Product(
+        "5",
         "Minimalist Watch",
         89.0,
         "assets/images/product-3.svg",
@@ -81,6 +86,7 @@ const PRODUCTS = [
         }
     ),
     new Product(
+        "6",
         "Cozy Knit Sweater",
         49.5,
         "assets/images/product-4.svg",
@@ -96,6 +102,7 @@ const PRODUCTS = [
         }
     ),
     new Product(
+        "7",
         "Classic Denim",
         54.0,
         "assets/images/product-5.svg",
@@ -110,6 +117,7 @@ const PRODUCTS = [
         }
     ),
     new Product(
+        "8",
         "Canvas Tote Bag",
         19.99,
         "assets/images/product-6.svg",
@@ -124,6 +132,7 @@ const PRODUCTS = [
         }
     ),
     new Product(
+        "9",
         "Trail Running Shoes",
         79.99,
         "assets/images/product-7.svg",
@@ -138,6 +147,7 @@ const PRODUCTS = [
         }
     ),
     new Product(
+        "10",
         "Classic Baseball Cap",
         14.5,
         "assets/images/product-8.svg",
@@ -156,7 +166,6 @@ const PRODUCTS = [
 export { PRODUCTS };
 
 export const getProduct = (productId) => {
-    console.log({PRODUCTS}, productId)
     return PRODUCTS.find((product) => {
         return product.id == productId;
     });

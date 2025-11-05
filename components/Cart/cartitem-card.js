@@ -1,6 +1,11 @@
-import { escapeHtml, formatPrice } from "../js/lib/utils.js";
+import { escapeHtml, formatPrice } from "../../js/lib/utils.js";
 
-export default function CartItemCard(product, item, changeCartQty, removeFromCart) {
+export default function CartItemCard(
+    product,
+    item,
+    changeCartQuantity,
+    removeFromCart
+) {
     const unit = product.details.salePrice || product.getPrice();
     const lineTotal = unit * item.quantity;
 
@@ -38,17 +43,17 @@ export default function CartItemCard(product, item, changeCartQty, removeFromCar
 
     // listeners
     cartItem.querySelector(".qty-inc").addEventListener("click", () => {
-        changeCartQty(product.id, item.qty + 1);
+        changeCartQuantity(product.id, item.quantity + 1);
     });
     cartItem.querySelector(".qty-dec").addEventListener("click", () => {
-        changeCartQty(product.id, item.qty - 1);
+        changeCartQuantity(product.id, item.quantity - 1);
     });
     cartItem.querySelector("[data-remove]").addEventListener("click", () => {
         removeFromCart(product.id);
     });
 
     return {
-        element : cartItem,
-        total : lineTotal
+        element: cartItem,
+        total: lineTotal,
     };
 }

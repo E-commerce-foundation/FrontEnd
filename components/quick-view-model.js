@@ -24,23 +24,25 @@ export function openQuickViewModal(productId) {
           ${
               product.badge
                   ? `<div class="quick-view-badge">${escapeHtml(
-                        product.badge
+                        product.details.badge
                     )}</div>`
                   : ""
           }
         </div>
         <div class="quick-view-meta">
           <p class="quick-view-subtitle">${escapeHtml(
-              product.category
-          )} • ${escapeHtml(product.color)}</p>
+              product.details.category
+          )} • ${escapeHtml(product.details.color)}</p>
           <div class="quick-view-rating">
             <span class="stars">${stars}</span> (${
-        product.reviewCount || 0
+        product.details.reviewCount || 0
     } reviews)
           </div>
+          
+          
           <div class="quick-view-price-row">
             <span class="quick-view-price-current">$${formatPrice(
-                product.salePrice || product.price
+                product.details.salePrice || product.getPrice()
             )}</span>
             ${
                 product?.details?.salePrice

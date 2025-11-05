@@ -1,7 +1,8 @@
 class Product {
     #price;
-    constructor(name, price, image, description = "", details = {}) {
-        this.id = Math.random().toString(36).substring(2, 9);
+    constructor(id, name, price, image, description = "", details = {}) {
+        // this.id = Math.random().toString(36).substring(2, 9);
+        this.id = id;
         this.name = name;
         this.#price = price;
         this.image = image;
@@ -17,10 +18,11 @@ class Product {
     getRatingStars() {
         const fullStars = Math.floor(this.details.rating || 0);
         const hasHalfStar = (this.details.rating || 0) % 1 >= 0.5;
-        return "★".repeat(fullStars) +
-
+        return (
+            "★".repeat(fullStars) +
             (hasHalfStar ? "☆" : "") +
-            "☆".repeat(5 - fullStars - (hasHalfStar ? 1 : 0));
+            "☆".repeat(5 - fullStars - (hasHalfStar ? 1 : 0))
+        );
     }
 }
 
@@ -75,22 +77,21 @@ class Cart {
         this.load();
     }
 
-    add(productId, quantity = 1) {
-        const existingItem = this.items.get(productId);
-        console.log("existing item", existingItem)
-        if (existingItem) {
-            existingItem.quantity += quantity;
-            this.#total += /*existingItem.product.getPrice()*/ 10 * quantity;
+    add(product, quantity = 1) {
+        const existingCartItem = this.items.get(product.id);
+        if (existingCartItem) {
+            existingCartItem.quantity += quantity;
+            this.#total += product.getPrice() * quantity;
         } else {
-            this.items.set(productId, new CartItem(productId, quantity));
-            this.#total += 10 * quantity;
+            this.items.set(product.id, new CartItem(product.id, quantity));
+            this.#total += product.getPrice() * quantity;
         }
         this.save();
     }
 
     remove(product) {
+        this.#total -= product.getPrice() * this.items.get(product.id).quantity;
         this.items.delete(product.id);
-        this.#total -= product.price * this.items.get(product.id).quantity;
         this.save();
     }
 
@@ -101,11 +102,13 @@ class Cart {
     }
 
     save() {
+        const toStore = JSON.stringify({
+            items: [...this.items],
+            total: this.#total,
+        });
+        console.log(toStore);
         try {
-            localStorage.setItem(
-                this.STORAGE_CART,
-                JSON.stringify({ items: this.items, total: this.#total })
-            );
+            localStorage.setItem(this.STORAGE_CART, toStore);
         } catch (e) {
             console.warn("Failed to save cart", e);
         }
@@ -113,14 +116,17 @@ class Cart {
 
     load() {
         try {
-            const items = localStorage.getItem(this.STORAGE_CART);
-            this.items = items ? new Map(JSON.parse(items)) : new Map();
+            const cart = localStorage.getItem(this.STORAGE_CART);
+            const parsedCart = cart ? JSON.parse(cart) : null;
+
+            this.items = parsedCart ? new Map(parsedCart.items) : new Map();
+            this.#total = parsedCart ? parsedCart.total : 0;
         } catch (e) {
             this.items = new Map();
         }
     }
 
-    clear(){
+    clear() {
         this.items = new Map();
         this.#total = 0;
         this.save();
@@ -128,6 +134,17 @@ class Cart {
 
     getTotal() {
         return this.#total;
+    }
+
+    getTotalQuantity() {
+        const count = Array.from(window.shoppingCart.items.values()).reduce(
+            (acc, item) => {
+                acc += item.quantity;
+                return acc;
+            },
+            0
+        );
+        return count;
     }
 }
 
@@ -169,4 +186,5 @@ class Admin extends User {
 export { Product, CartItem, Cart, Favorites, Order, OrderQueue, User, Admin };
 
 window.shoppingCart = new Cart();
+window.shoppingCart.load();
 window.favorites = new Favorites();

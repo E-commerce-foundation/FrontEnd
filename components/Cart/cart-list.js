@@ -1,11 +1,13 @@
-import { getProduct } from "../js/data/products.js";
+import { getProduct } from "../../js/data/products.js";
 import CartItemCard from "./cartitem-card.js";
 
 export default function CartList(items, changeCartQuantity, removeFromCart) {
     const frag = document.createDocumentFragment();
     let total = 0;
     items.forEach((item) => {
+        console.log({ item });
         const product = getProduct(item.productId);
+        console.log("list item", { product });
         const cartItem = CartItemCard(
             product,
             item,

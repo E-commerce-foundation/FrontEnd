@@ -3,7 +3,9 @@ import { getProduct, PRODUCTS as products } from "./js/data/products.js";
 import ProductList from "./components/product-list.js";
 import { formatPrice, escapeHtml } from "./js/lib/utils.js";
 import Toast from "./components/toast.js";
-import CartList from "./components/cart-list.js";
+import CartList from "./components/Cart/cart-list.js";
+import { openCartDrawer } from "./components/Cart/cart-drawer.js";
+import { addToCart, renderCart } from "./components/Cart/CartSystem.js";
 
 // DOM Elements - Updated for professional design
 const productGrid = document.getElementById("productGrid");
@@ -11,20 +13,7 @@ const categoryFilter = document.getElementById("categoryFilter");
 const sortSelect = document.getElementById("sortSelect");
 const searchInput = document.getElementById("searchInput");
 const cartBtn = document.getElementById("cartBtn");
-const cartDrawer = document.getElementById("cartDrawer");
-const closeCartBtn = document.getElementById("closeCart");
 
-const cartList = document.getElementById("cartList");
-const cartTotalEl = document.getElementById("cartTotal");
-const cartCountEl = document.getElementById("cartCount");
-
-const checkoutBtn = document.getElementById("checkoutBtn");
-const checkoutModal = document.getElementById("checkoutModal");
-const orderSummary = document.getElementById("orderSummary");
-const closeModal = document.getElementById("closeModal");
-const confirmPayment = document.getElementById("confirmPayment");
-
-const printReceipt = document.getElementById("printReceipt");
 const favoritesBtn = document.getElementById("favoritesBtn");
 
 function debounce(func, wait) {
@@ -39,16 +28,12 @@ function debounce(func, wait) {
     };
 }
 
-cartBtn.addEventListener("click", openCartDrawer);
-closeCartBtn.addEventListener("click", closeCartDrawer);
-
-function openCartDrawer() {
-    cartDrawer.setAttribute("aria-hidden", false);
+function toggleFav(id) {
+    window.favorites.toggle(id);
 }
 
-function closeCartDrawer() {
-    cartDrawer.setAttribute("aria-hidden", true);
-}
+window.toggleFav = toggleFav;
+window.addToCart = addToCart;
 
 // Filtering / sorting
 function onFilterChange() {
@@ -79,11 +64,6 @@ function wireEvents() {
     searchInput.addEventListener("input", debounce(onFilterChange, 250));
     categoryFilter.addEventListener("change", onFilterChange);
     sortSelect.addEventListener("change", onFilterChange);
-
-    checkoutBtn.addEventListener("click", openCheckout);
-    closeModal.addEventListener("click", closeCheckout);
-    confirmPayment.addEventListener("click", onConfirmPayment);
-    // printReceipt.addEventListener("click", onPrintReceipt);
 
     favoritesBtn.addEventListener("click", () => {
         const favCount = window.favorites.items.length;
@@ -131,148 +111,8 @@ function renderProducts(products_list) {
     productGrid.appendChild(ProductList(products_list));
 }
 
-function toggleFav(id) {
-    window.favorites.toggle(id);
-}
-
-// Cart functions
-function addToCart(productId) {
-    shoppingCart.add(productId);
-    renderCart();
-    updateCartCount();
-    // visual affordance
-    Toast(
-        `Added ${getProduct(productId)?.name || "Product"} to cart!`,
-        "success"
-    );
-}
-
-window.toggleFav = toggleFav;
-window.addToCart = addToCart;
-
-function renderCart() {
-    console.log("cart", window.shoppingCart)
-    cartList.innerHTML = "";
-    
-    if (!window.shoppingCart.items.size) {
-        cartList.innerHTML = '<p class="muted">Your cart is empty.</p>';
-        cartTotalEl.textContent = "$10.00";
-        return;
-    }
-    const cartListObj = CartList(Array.from(window.shoppingCart.items.values()), changeCartQuantity, removeFromCart);
-    cartList.appendChild(cartListObj.element);
-    cartTotalEl.textContent = `$${formatPrice(cartListObj.total)}`;
-}
-
-
-function changeCartQuantity(productId, quantity) {
-    shoppingCart.updateQuantity(productId, quantity);
-    renderCart();
-    updateCartCount();
-}
-
-function removeFromCart(productId) {
-    shoppingCart.remove(productId);
-    renderCart();
-    updateCartCount();
-}
-
-
-function updateCartCount() {
-    const count = Array.from(shoppingCart.items.values()).reduce(
-        (acc, item) => {
-            acc += item.quantity;
-            return acc;
-        },
-        0
-    );
-    cartCountEl.textContent = String(count);
-
-    // one-shot pop animation to indicate update (CSS .cart-count.pop)
-    try {
-        cartCountEl.classList.remove("pop");
-        // force reflow
-        // eslint-disable-next-line no-unused-expressions
-        void cartCountEl.offsetWidth;
-        cartCountEl.classList.add("pop");
-    } catch (e) {
-        // element may not exist or animation not supported — ignore
-    }
-    cartBtn.animate(
-        [
-            { transform: "scale(1)" },
-            { transform: "scale(1.06)" },
-            { transform: "scale(1)" },
-        ],
-        { duration: 220 }
-    );
-}
-
-// Checkout
-function openCheckout() {
-    if (!shoppingCart.items.length) {
-        alert("Your cart is empty.");
-        return;
-    }
-    renderOrderSummary();
-    checkoutModal.setAttribute("aria-hidden", "false");
-}
-
-function closeCheckout() {
-    checkoutModal.setAttribute("aria-hidden", "true");
-}
-
-function renderOrderSummary() {
-    const lines = cart.map((item) => {
-        const product = products.find((p) => p.id === item.id);
-        const unit = product.salePrice || product.price;
-        const lineTotal = unit * item.qty;
-        return `
-        <div style="display:flex;justify-content:space-between;margin-bottom:0.5rem">
-          <div>${escapeHtml(product.name)} × ${item.qty}</div>
-          <div><strong>$${formatPrice(lineTotal)}</strong></div>
-        </div>
-      `;
-    });
-    const subtotal = cart.reduce((s, i) => {
-        const p = products.find((x) => x.id === i.id);
-        const unit = p ? p.salePrice || p.price : 0;
-        return s + unit * i.qty;
-    }, 0);
-    const tax = subtotal * 0.08;
-    const total = subtotal + tax;
-
-    orderSummary.innerHTML = `
-      <div>
-        ${lines.join("")}
-        <hr>
-        <div style="display:flex;justify-content:space-between"><div>Subtotal</div><div>$${formatPrice(
-            subtotal
-        )}</div></div>
-        <div style="display:flex;justify-content:space-between"><div>Tax (8%)</div><div>$${formatPrice(
-            tax
-        )}</div></div>
-        <div style="display:flex;justify-content:space-between;font-weight:700;margin-top:0.5rem"><div>Total</div><div>$${formatPrice(
-            total
-        )}</div></div>
-      </div>
-    `;
-}
-
-function onConfirmPayment() {
-    // simple simulated payment flow
-    alert("Payment simulated — thank you for your purchase!");
-    // Save receipt content temporarily for print
-    renderOrderSummary();
-    // clear cart
-    window.shoppingCart.clear();
-    saveCart();
-    renderCart();
-    updateCartCount();
-    closeCheckout();
-}
-
 // Initialize the app
 populateCategoryFilter();
 renderProducts(products);
+renderCart();
 wireEvents();
